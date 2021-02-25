@@ -77,6 +77,10 @@ public class Main {
                     waitingCarsAtTheEndOfStreets.add(new WaitingCarAtTheAndOfTheStreet(car, endStreet, 0));
                 }
             }
+            if (waitingCarsAtTheEndOfStreets.isEmpty()
+            ) {
+                break;
+            }
             waitingCarsAtTheEndOfStreets = sortCarsByPriority(waitingCarsAtTheEndOfStreets);
             List<Street> streets = waitingCarsAtTheEndOfStreets.stream().map(x -> x.street).collect(Collectors.toList());
             List<Integer> availableIntersections = getDifferentIntersections(streets);

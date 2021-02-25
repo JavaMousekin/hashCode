@@ -32,6 +32,8 @@ public class Car implements Comparable<Car>{
 
     /*возвращает улицу, в конце которой стоит в данную секунду. если находится в середине, возвращает нулл*/
     public Street isAtTheEndOfStreet(int currentSecond) {
+        if(currentSecond==0)
+            return streets.get(0);
         int leftSeconds = currentSecond;
         for (int i = 0; i < streets.size() && leftSeconds > 0; i++) {
             Street street = streets.get(i);
