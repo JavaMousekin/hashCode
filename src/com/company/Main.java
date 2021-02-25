@@ -1,7 +1,15 @@
 package com.company;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -9,13 +17,7 @@ import java.util.stream.Stream;
 public class Main {
 
     private static class Input {
-        Map<Integer, Integer> teamsCounter;
-        List<List<String>> pizzaMenu;
 
-        public Input(Map<Integer, Integer> teamsCounter, List<List<String>> pizzaMenu) {
-            this.teamsCounter = teamsCounter;
-            this.pizzaMenu = pizzaMenu;
-        }
     }
 
     public static Input getData(String fileName) {
@@ -30,11 +32,7 @@ public class Main {
                 ingredients.remove(0);
                 pizzas.add(ingredients);
             }
-            input = new Input(new HashMap<Integer, Integer>() {{
-                put(2, firstLine.get(1));
-                put(3, firstLine.get(2));
-                put(4, firstLine.get(3));
-            }}, pizzas);
+            input = new Input();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,52 +49,13 @@ public class Main {
 
     public static String process(Input input) {
         StringBuilder builder = new StringBuilder();
-        AtomicInteger counter = new AtomicInteger();
-        for (int a : new int[]{2, 3, 4}) {
-            if (a > input.pizzaMenu.size()) {
-                continue;
-            }
-            if (input.teamsCounter.get(a) > 0 && a == input.pizzaMenu.size()) {
-                builder.append(counter.incrementAndGet()).append("\n").append(a).append(" ");
-                for (int i = 0; i < input.pizzaMenu.size(); i++) {
-                    builder.append(i).append(" ");
-                }
-                return builder.toString();
-            }
-        }
 
-        StringBuilder result = new StringBuilder();
-        if (4 < input.pizzaMenu.size()) {
-            Map<String, Boolean> uniqueIngredients = new HashMap<>();
-            input.pizzaMenu.forEach(pizza -> pizza.forEach(ingredient -> uniqueIngredients.put(ingredient, false)));
-
-            List<String> pizzaList = new ArrayList<>();
-            for (int allowedMatch = 0; allowedMatch < Collections.max(input.pizzaMenu.stream()
-                    .map(List::size)
-                    .collect(Collectors.toList())); allowedMatch++) {
-                for (int i = 0; i < input.pizzaMenu.size(); i++) {
-                    List<String> pizza = input.pizzaMenu.get(i);
-                    if (pizza.stream().filter(uniqueIngredients::get).count() == allowedMatch
-                            && pizza.size() > allowedMatch) {
-                        pizza.forEach(ingredient -> uniqueIngredients.put(ingredient, true));
-                        pizzaList.add(String.valueOf(i));
-                    }
-                    if (input.teamsCounter.get(4) > 0 && pizzaList.size() == 4) {
-                        result.append("4").append(" ").append(String.join(" ", pizzaList)).append("\n");
-                        input.teamsCounter.put(4, input.teamsCounter.get(4) - 1);
-                        pizzaList = new ArrayList<>();
-                    }
-                }
-            }
-
-        }
-
-        return result.toString().split("\n").length + "\n" + result.toString();
+        return builder.toString();
     }
 
     public static void main(String[] args) {
-        String path = "C:\\Users\\agris\\Downloads\\Telegram Desktop\\hashCodeTrain\\hashCodeTrain\\src\\com\\company\\";
-        List<String> files = Arrays.asList("b_little_bit_of_everything", "c_many_ingredients", "d_many_pizzas", "e_many_teams");
+        String path = "\\";
+        List<String> files = Arrays.asList("");
         files.forEach(file -> postData(process(getData(path + file + ".in")), path + file + ".out"));
         postData(process(getData(path + "a_example")), path + "a_example" + ".out");
     }
