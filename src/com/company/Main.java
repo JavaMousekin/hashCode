@@ -91,16 +91,6 @@ public class Main {
                         input.teamsCounter.put(4, input.teamsCounter.get(4) - 1);
                         pizzaList = new ArrayList<>();
                     }
-                    if (input.teamsCounter.get(3) > 0 && pizzaList.size() == 3) {
-                        result.append("3").append(" ").append(String.join(" ", pizzaList)).append("\n");
-                        input.teamsCounter.put(3, input.teamsCounter.get(3) - 1);
-                        pizzaList = new ArrayList<>();
-                    }
-                    if (input.teamsCounter.get(2) > 0 && pizzaList.size() == 2) {
-                        result.append("2").append(" ").append(String.join(" ", pizzaList)).append("\n");
-                        input.teamsCounter.put(2, input.teamsCounter.get(2) - 1);
-                        pizzaList = new ArrayList<>();
-                    }
                 }
             }
         }
