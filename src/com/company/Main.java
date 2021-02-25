@@ -4,6 +4,7 @@ package com.company;
 import com.company.model.Car;
 import com.company.model.Intersection;
 import com.company.model.Street;
+import com.company.model.WaitingCarAtTheAndOfTheStreet;
 import com.company.model.Streetlight;
 
 import java.io.BufferedReader;
@@ -59,38 +60,43 @@ public class Main {
         List<Intersection> intersections;
         List<Street> streets;
     }
-    public void algorithm(Input input)
-    {
+
+    public void algorithm(Input input) {
         /*на каждую секунду узнаем, стоит ли машина в конце улицы, выбираем приоритетные и пропускаем их*/
+        List<WaitingCarAtTheAndOfTheStreet> waitingCarsAtTheEndOfStreets = new ArrayList<>();
         for (int i = 0; i < input.simLasts; i++) {
-            List<Map.Entry<Car, Street>> waitingCarsAtTheEndOfStreets = new ArrayList<>();
+
             for (Car car : input.cars) {
                 if (car.isCompleted) {
                     continue;
                 }
                 Street endStreet = car.isAtTheEndOfStreet(i);
-                if (endStreet != null) {
-                    waitingCarsAtTheEndOfStreets.add(new AbstractMap.SimpleEntry<>(car, endStreet));
+                if (endStreet != null && waitingCarsAtTheEndOfStreets.stream().noneMatch(x -> x.car.equals(car))) {
+                    waitingCarsAtTheEndOfStreets.add(new WaitingCarAtTheAndOfTheStreet(car, endStreet, 0));
                 }
             }
             waitingCarsAtTheEndOfStreets = sortCarsByPriority(waitingCarsAtTheEndOfStreets);
-            List<Street> streets = waitingCarsAtTheEndOfStreets.stream().map(Map.Entry::getValue).collect(Collectors.toList());
+            List<Street> streets = waitingCarsAtTheEndOfStreets.stream().map(x -> x.street).collect(Collectors.toList());
             List<Integer> availableIntersections = getDifferentIntersections(streets);
-            while(availableIntersections.size()>0 && waitingCarsAtTheEndOfStreets.size()>0)
-            {
-                Map.Entry<Car, Street> carStreet = waitingCarsAtTheEndOfStreets.get(0);
+            while (availableIntersections.size() > 0 && waitingCarsAtTheEndOfStreets.size() > 0) {
+                WaitingCarAtTheAndOfTheStreet carStreet = waitingCarsAtTheEndOfStreets.get(0);
                 waitingCarsAtTheEndOfStreets.remove(0);
-                int currentIntersection = carStreet.getValue().endIntersection;
+                int currentIntersection = carStreet.street.endIntersection;
                 availableIntersections.remove(currentIntersection);
-                carStreet.getKey().doCalculationsWhenPassingIntersection();
+                carStreet.car.doCalculationsWhenPassingIntersection(currentIntersection, carStreet.timeStaying + 1);
+            }
+            for (WaitingCarAtTheAndOfTheStreet waitingCar :
+                    waitingCarsAtTheEndOfStreets) {
+                waitingCar.timeStaying += 1;
             }
         }
     }
 
-    public List<Map.Entry<Car, Street>> sortCarsByPriority(List<Map.Entry<Car, Street>> waitingCarsAtTheEndOfStreets) {
-        return waitingCarsAtTheEndOfStreets.stream().sorted(Comparator.comparing(Map.Entry::getKey)).collect(Collectors.toList());
+    public List<WaitingCarAtTheAndOfTheStreet> sortCarsByPriority(List<WaitingCarAtTheAndOfTheStreet> waitingCarsAtTheEndOfStreets) {
+        return waitingCarsAtTheEndOfStreets.stream().sorted(Comparator.comparing(x -> x.car))
+        .collect(Collectors.toList());
     }
-    
+
     public static Input getData(String fileName) {
         Input input = null;
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
