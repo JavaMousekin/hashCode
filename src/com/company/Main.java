@@ -208,7 +208,7 @@ public class Main {
         return false;
     }
 
-    public List<Integer> getDifferentIntersections(List<Street> streets){
+    public static List<Integer> getDifferentIntersections(List<Street> streets){
         List<Integer> intersectionsList = new ArrayList<>();
         for (Street street: streets) {
             int concurrency;

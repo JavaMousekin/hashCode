@@ -1,10 +1,14 @@
 package com.company.model;
 
+import com.company.Main;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.company.Main.getDifferentIntersections;
 
 public class Car implements Comparable<Car>{
     public Car(List<Street> streets) {
@@ -56,6 +60,15 @@ public class Car implements Comparable<Car>{
 
     public boolean isBeforeLastIntersection(int intersection)
     {
+        List<Integer> allIntersectons= Main.getDifferentIntersections(this.streets);
+        if(allIntersectons.size()>2) {
+            if (allIntersectons.contains(intersection) && allIntersectons.indexOf(intersection) == allIntersectons.size() - 2) {
+                return true;
+            }
+        }
+        if(allIntersectons.size()==2 && allIntersectons.indexOf(intersection)==1){
+            return true;
+        }
         return false;
     }
 
