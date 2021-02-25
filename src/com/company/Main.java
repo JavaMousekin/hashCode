@@ -129,7 +129,14 @@ public class Main {
         );
         return outcomingStreets;
     }
-    
+
+    public boolean multipleEnd(Street firstStreet, Street secondStreet) {
+        if (firstStreet.getEndIntersection() == secondStreet.getEndIntersection()) {
+            return true;
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         String path = "\\";
         List<String> files = Arrays.asList("");
