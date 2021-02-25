@@ -90,12 +90,7 @@ public class Main {
     public List<Map.Entry<Car, Street>> sortCarsByPriority(List<Map.Entry<Car, Street>> waitingCarsAtTheEndOfStreets) {
         return waitingCarsAtTheEndOfStreets.stream().sorted(Comparator.comparing(Map.Entry::getKey)).collect(Collectors.toList());
     }
-
-    public List<Integer> getDifferentIntersections(List<Street> streets)
-    {
-        return new ArrayList<>();
-    }
-
+    
     public static Input getData(String fileName) {
         Input input = null;
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
