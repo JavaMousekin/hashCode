@@ -79,7 +79,7 @@ public class Main {
             }
             if (waitingCarsAtTheEndOfStreets.isEmpty()
             ) {
-                break;
+                continue;
             }
             waitingCarsAtTheEndOfStreets = sortCarsByPriority(waitingCarsAtTheEndOfStreets);
             List<Street> streets = waitingCarsAtTheEndOfStreets.stream().map(x -> x.street).collect(Collectors.toList());
