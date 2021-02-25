@@ -62,7 +62,7 @@ public class Main {
         List<Street> streets;
     }
 
-    public void algorithm(Input input) {
+    public static String algorithm(Input input) {
         List<Intersection> allPossibleIntersections = getAllPossibleIntersections(getDifferentIntersections(input.streets));
         /*на каждую секунду узнаем, стоит ли машина в конце улицы, выбираем приоритетные и пропускаем их*/
         List<WaitingCarAtTheAndOfTheStreet> waitingCarsAtTheEndOfStreets = new ArrayList<>();
@@ -95,10 +95,24 @@ public class Main {
                 waitingCar.timeStaying += 1;
             }
         }
+
+        List<Intersection> intersections = allPossibleIntersections.stream()
+                .filter(intersection -> intersection.greenLightAtStreets.size() != 0)
+                .collect(Collectors.toList());
+        StringBuilder builder = new StringBuilder();
+        builder.append(intersections.size()).append("\n");
+        intersections.forEach(intersection ->
+        {
+            builder.append(intersection.getId()).append("\n");
+            builder.append(intersection.greenLightAtStreets.size()).append("\n");
+            intersection.greenLightAtStreets.forEach((key, value) ->
+                    builder.append(key).append(" ").append(value).append("\n"));
+        });
+        return builder.toString();
     }
 
 
-    public List<WaitingCarAtTheAndOfTheStreet> sortCarsByPriority(List<WaitingCarAtTheAndOfTheStreet> waitingCarsAtTheEndOfStreets) {
+    public static List<WaitingCarAtTheAndOfTheStreet> sortCarsByPriority(List<WaitingCarAtTheAndOfTheStreet> waitingCarsAtTheEndOfStreets) {
         return waitingCarsAtTheEndOfStreets.stream().sorted(Comparator.comparing(x -> x.car))
         .collect(Collectors.toList());
     }
@@ -220,7 +234,7 @@ public class Main {
         }
         return intersectionsList;
     }
-    public List<Intersection> getAllPossibleIntersections(List<Integer> intersectionsNumbers){
+    public static List<Intersection> getAllPossibleIntersections(List<Integer> intersectionsNumbers){
         List<Intersection> intersections = new ArrayList<>();
 
         for (int i = 0; i < intersectionsNumbers.size(); i++) {
@@ -232,7 +246,7 @@ public class Main {
 
     public static void main(String[] args) {
         String path = "C:\\Users\\Kostik\\IdeaProjects\\hashCode\\src\\com\\company\\";
-        List<String> files = Arrays.asList("b", "c", "d", "e", "f");
+        List<String> files = Arrays.asList("a", "b");//, "c", "d", "e", "f");
         files.forEach(file -> postData(getShortestCarWays(getData(path + file + ".txt")), path + file + ".out"));
         //postData(getShortestCarWays(getData(path + "a_example");), path + "a_example" + ".out");
     }
