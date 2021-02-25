@@ -137,6 +137,19 @@ public class Main {
         return false;
     }
 
+    public List<Integer> getDifferentIntersections(List<Street> streets){
+        List<Integer> intersectionsList = new ArrayList<>();
+        for (Street street: streets) {
+            int concurrency;
+            int finalEndIntersectionNumber = street.endIntersection;
+            concurrency = (int) streets.stream().filter(currStreet -> currStreet.getEndIntersection() == finalEndIntersectionNumber).count();
+            if ((concurrency > 1) && !intersectionsList.contains((Integer) finalEndIntersectionNumber)) {
+                intersectionsList.add((Integer)finalEndIntersectionNumber);
+            }
+        }
+        return intersectionsList;
+    }
+
     public static void main(String[] args) {
         String path = "\\";
         List<String> files = Arrays.asList("");
