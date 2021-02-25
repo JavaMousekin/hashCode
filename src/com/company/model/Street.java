@@ -12,5 +12,5 @@ public class Street {
     public int endIntersection;
     public String name;
     public int length;
-    public StreetEndIntersection streetEndIntersection;
+    public Streetlight streetlight;
 }

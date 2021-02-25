@@ -1,7 +1,7 @@
 package com.company.model;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class Car {
     public Car(List<Street> streets) {
@@ -9,8 +9,24 @@ public class Car {
     }
 
     public List<Street> streets;
+    public Map<Integer, Integer> intersectionsTimeCrossing;
     public int priority;
     public int amountOfIntersections= streets.size()-1;
     public int totalAmountOFStreets= streets.size();
+
+    /*возвращает улицу, в конце которой стоит в данную секунду. если находится в середине, возвращает нулл*/
+    public Street isAtTheEndOfStreet(int currentSecond)
+    {
+        int leftSeconds = currentSecond;
+        for (int i = 0; i < streets.size() && leftSeconds>0; i++) {
+            Street street = streets.get(i);
+            leftSeconds = leftSeconds-street.length;
+            if(currentSecond-street.streetlight.greenLight==0)
+            {
+                return street;
+            }
+        }
+       return null;
+    }
 
 }

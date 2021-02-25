@@ -50,7 +50,7 @@ public class Main {
                         .map(intersection -> intersection.id)
                         .collect(Collectors.toList()).contains(Integer.parseInt(values.get(0))))
                 {
-                    intersections.add(new Intersection(Integer.parseInt(values.get(0)), 0));
+                    intersections.add(new Intersection(Integer.parseInt(values.get(0))));
                 }
                 streets.add(new Street(Integer.parseInt(values.get(0)), Integer.parseInt(values.get(1)),
                         values.get(2),
