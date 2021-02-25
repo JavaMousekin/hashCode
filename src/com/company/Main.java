@@ -4,6 +4,7 @@ package com.company;
 import com.company.model.Car;
 import com.company.model.Intersection;
 import com.company.model.Street;
+import com.company.model.Streetlight;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,6 +19,10 @@ import java.util.stream.Stream;
 public class Main {
 
     private static class Input {
+        public List<Street> getStreets() {
+            return streets;
+        }
+
         public Input(int simLasts, List<Car> cars, List<Intersection> intersections, List<Street> streets) {
             this.simLasts = simLasts;
             this.cars = cars;
@@ -103,7 +108,7 @@ public class Main {
             {
                 ArrayList<String> values = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
                 if (!intersections.stream()
-                        .map(intersection -> intersection.id)
+                        .map(Intersection::getId)
                         .collect(Collectors.toList()).contains(Integer.parseInt(values.get(0))))
                 {
                     intersections.add(new Intersection(Integer.parseInt(values.get(0))));
@@ -117,10 +122,10 @@ public class Main {
             {
                 ArrayList<String> values = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
                 cars.add(new Car(streets.stream()
-                        .filter(street -> values.contains(street.))
+                        .filter(street -> values.contains(street.getName()))
                         .collect(Collectors.toList())));
             }
-            input = new Input(firstLine.get(0), cars, intersections);
+            input = new Input(firstLine.get(0), cars, intersections, streets);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -137,13 +142,38 @@ public class Main {
 
     public static String process(Input input) {
         StringBuilder builder = new StringBuilder();
-        Map<Car, Integer> path = input.cars.stream().map(car -> car.streets.)
+
+        return builder.toString();
+    }
+
+    public String getShortestCarWays(Input input) {
+        Map<Car, Integer> path = new HashMap<>();
+        input.getCars().forEach(car -> path.put(car, car.getStreets().size() - 1 + car.getStreets().stream()
+                                         .map(Street::getLength)
+                                         .reduce(0, Integer::sum)));
+        Set<Integer> intersections = new HashSet<>();
+
+        path.entrySet().stream()
+                .filter(carIntegerEntry -> carIntegerEntry.getValue() <= input.getSimLasts())
+                .forEach(carIntegerEntry -> {
+                    carIntegerEntry.getKey().getStreets().forEach(street -> intersections.add(street.endIntersection));
+                });
+        StringBuilder builder = new StringBuilder();
+        builder.append(intersections.size());
+        intersections.forEach(intersection ->
+                builder.append(intersection)
+                        .append(incomingStreets(intersection, input).size())
+                        .append(input.getStreets().stream()
+                                .filter(street -> street.getEndIntersection() == intersection)
+                                .map(street -> street.getName() + " 1")
+                                .collect(Collectors.joining("\n")))
+        );
         return builder.toString();
     }
 
     public List<Street> incomingStreets(int intersection, Input input) {
         List<Street> incomingStreets = new ArrayList<>();
-        input.streets.stream().forEach(street -> {
+        input.getStreets().forEach(street -> {
                     if (street.startIntersection == intersection) {
                         incomingStreets.add(street);
                     }
@@ -153,7 +183,7 @@ public class Main {
     }
     public List<Street> outcomingStreets(int intersection, Input input) {
         List<Street> outcomingStreets = new ArrayList<>();
-        input.streets.stream().forEach(street -> {
+        input.streets.forEach(street -> {
                     if (street.endIntersection == intersection) {
                         outcomingStreets.add(street);
                     }

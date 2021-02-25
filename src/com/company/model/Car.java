@@ -1,18 +1,25 @@
 package com.company.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Car implements Comparable<Car>{
     public Car(List<Street> streets) {
         this.streets = streets;
+        this.amountOfIntersections = streets.size()-1;
+        this.totalAmountOFStreets = streets.size();
     }
 
-    public List<Street> streets;
+    public List<Street> getStreets() {
+        return streets;
+    }
+
+    public List<Street> streets = new ArrayList<>();
     public Map<Integer, Integer> intersectionsTimeCrossing;
     public int priority;
-    public int amountOfIntersections= streets.size()-1;
-    public int totalAmountOFStreets= streets.size();
+    public int amountOfIntersections ;
+    public int totalAmountOFStreets;
     public boolean isCompleted = false;
 
     /*возвращает улицу, в конце которой стоит в данную секунду. если находится в середине, возвращает нулл*/
