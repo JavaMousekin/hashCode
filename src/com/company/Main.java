@@ -53,7 +53,7 @@ public class Main {
             for (int i=0; i < firstLine.get(3); i++)
             {
                 ArrayList<String> values = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
-                cars.add(new Car())
+                cars.add(new Car(streets.stream().filter(street -> values.contains(street.get)).collect(Collectors.toList())));
             }
             List<List<String>> otherLines = new ArrayList<>();
             for (int i = 0; i < firstLine.get(0); i++) {
