@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 
 public class Main {
 
+
     private static class Input {
         public List<Street> getStreets() {
             return streets;
@@ -62,6 +63,7 @@ public class Main {
     }
 
     public void algorithm(Input input) {
+        List<Intersection> allPossibleIntersections = getAllPossibleIntersections(getDifferentIntersections(input.streets));
         /*на каждую секунду узнаем, стоит ли машина в конце улицы, выбираем приоритетные и пропускаем их*/
         List<WaitingCarAtTheAndOfTheStreet> waitingCarsAtTheEndOfStreets = new ArrayList<>();
         for (int i = 0; i < input.simLasts; i++) {
@@ -84,6 +86,9 @@ public class Main {
                 int currentIntersection = carStreet.street.endIntersection;
                 availableIntersections.remove(currentIntersection);
                 carStreet.car.doCalculationsWhenPassingIntersection(currentIntersection, carStreet.timeStaying + 1);
+                allPossibleIntersections.stream().filter(x->x.id==currentIntersection).findFirst().ifPresent(
+                        x->x.doCalculationsWhenPassingIntersection(carStreet.street)
+                );
             }
             for (WaitingCarAtTheAndOfTheStreet waitingCar :
                     waitingCarsAtTheEndOfStreets) {
@@ -91,6 +96,7 @@ public class Main {
             }
         }
     }
+
 
     public List<WaitingCarAtTheAndOfTheStreet> sortCarsByPriority(List<WaitingCarAtTheAndOfTheStreet> waitingCarsAtTheEndOfStreets) {
         return waitingCarsAtTheEndOfStreets.stream().sorted(Comparator.comparing(x -> x.car))
@@ -213,6 +219,15 @@ public class Main {
             }
         }
         return intersectionsList;
+    }
+    public List<Intersection> getAllPossibleIntersections(List<Integer> intersectionsNumbers){
+        List<Intersection> intersections = new ArrayList<>();
+
+        for (int i = 0; i < intersectionsNumbers.size(); i++) {
+            intersections.add(new Intersection(intersectionsNumbers.get(i)));
+        }
+
+        return intersections;
     }
 
     public static void main(String[] args) {

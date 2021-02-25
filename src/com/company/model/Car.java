@@ -11,16 +11,18 @@ public class Car implements Comparable<Car>{
         this.streets = streets;
         this.amountOfIntersections = streets.size()-1;
         this.totalAmountOFStreets = streets.size();
+        intersectionsTimeCrossing = new HashMap<>();
+        initializeIntersectionLength();
     }
 
     public List<Street> getStreets() {
         return streets;
     }
 
-    public List<Street> streets = new ArrayList<>();
+    public List<Street> streets;
     public Map<Integer, Integer> intersectionsTimeCrossing;
     public int priority;
-    public int amountOfIntersections ;
+    public int amountOfIntersections;
     public int totalAmountOFStreets;
     public boolean isCompleted = false;
 
@@ -35,6 +37,14 @@ public class Car implements Comparable<Car>{
             }
         }
         return null;
+    }
+
+    public void initializeIntersectionLength()
+    {
+        for (Street street: streets)
+        {
+            intersectionsTimeCrossing.put(street.endIntersection, Integer.MAX_VALUE);
+        }
     }
 
     public void doCalculationsWhenPassingIntersection(int intersection, int secondsPassing) {
