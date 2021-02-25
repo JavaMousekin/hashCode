@@ -18,16 +18,14 @@ public class Main {
         }
     }
 
-    public static Input getData(String fileName)
-    {
+    public static Input getData(String fileName) {
         Input input = null;
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             List<Integer> firstLine = Stream.of(br.readLine().split(" "))
                     .map(Integer::valueOf)
                     .collect(Collectors.toList());
             List<List<String>> pizzas = new ArrayList<>();
-            for (int i=0; i<firstLine.get(0); i++)
-            {
+            for (int i = 0; i < firstLine.get(0); i++) {
                 ArrayList<String> ingredients = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
                 ingredients.remove(0);
                 pizzas.add(ingredients);
@@ -43,8 +41,7 @@ public class Main {
         return input;
     }
 
-    public static void postData(String output, String fileName)
-    {
+    public static void postData(String output, String fileName) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
             bw.write(output);
         } catch (IOException e) {
@@ -52,13 +49,11 @@ public class Main {
         }
     }
 
-    public static String process(Input input)
-    {
+    public static String process(Input input) {
         StringBuilder builder = new StringBuilder();
         AtomicInteger counter = new AtomicInteger();
         for (int a : new int[]{2, 3, 4}) {
-            if (a > input.pizzaMenu.size())
-            {
+            if (a > input.pizzaMenu.size()) {
                 continue;
             }
             if (input.teamsCounter.get(a) > 0 && a == input.pizzaMenu.size()) {
