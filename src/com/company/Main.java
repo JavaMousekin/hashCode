@@ -29,6 +29,30 @@ public class Main {
             this.streets = streets;
         }
 
+        public int getSimLasts() {
+            return simLasts;
+        }
+
+        public void setSimLasts(int simLasts) {
+            this.simLasts = simLasts;
+        }
+
+        public List<Car> getCars() {
+            return cars;
+        }
+
+        public void setCars(List<Car> cars) {
+            this.cars = cars;
+        }
+
+        public List<Intersection> getIntersections() {
+            return intersections;
+        }
+
+        public void setIntersections(List<Intersection> intersections) {
+            this.intersections = intersections;
+        }
+
         int simLasts;
         List<Car> cars;
         List<Intersection> intersections;
@@ -54,14 +78,14 @@ public class Main {
                 }
                 streets.add(new Street(Integer.parseInt(values.get(0)), Integer.parseInt(values.get(1)),
                         values.get(2),
-                        Integer.parseInt(values.get(3))));
+                        Integer.parseInt(values.get(3)), null));
             }
             List<Car> cars = new ArrayList<>();
             for (int i=0; i < firstLine.get(3); i++)
             {
                 ArrayList<String> values = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
                 cars.add(new Car(streets.stream()
-                        .filter(street -> values.contains(street.name))
+                        .filter(street -> values.contains(street.))
                         .collect(Collectors.toList())));
             }
             input = new Input(firstLine.get(0), cars, intersections);
@@ -81,7 +105,7 @@ public class Main {
 
     public static String process(Input input) {
         StringBuilder builder = new StringBuilder();
-
+        Map<Car, Integer> path = input.cars.stream().map(car -> car.streets.)
         return builder.toString();
     }
 
