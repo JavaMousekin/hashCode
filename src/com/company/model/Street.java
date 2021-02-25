@@ -7,12 +7,12 @@ public class Street {
     public String name;
     public int length;
 
-    public Street(int startIntersection, int endIntersection, String name, int length, StreetEndIntersection streetEndIntersection) {
+    public Street(int startIntersection, int endIntersection, String name, int length, Streetlight streetlight) {
         this.startIntersection = startIntersection;
         this.endIntersection = endIntersection;
         this.name = name;
         this.length = length;
-        this.streetEndIntersection = streetEndIntersection;
+        this.streetlight = streetlight;
     }
 
     public int getStartIntersection() {
@@ -47,14 +47,5 @@ public class Street {
         this.length = length;
     }
 
-    public StreetEndIntersection getStreetEndIntersection() {
-        return streetEndIntersection;
-    }
-
-    public void setStreetEndIntersection(StreetEndIntersection streetEndIntersection) {
-        this.streetEndIntersection = streetEndIntersection;
-    }
-
-    public StreetEndIntersection streetEndIntersection;
     public Streetlight streetlight;
 }
