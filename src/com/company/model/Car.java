@@ -1,8 +1,10 @@
 package com.company.model;
 
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Car implements Comparable<Car>{
     public Car(List<Street> streets) {
@@ -23,27 +25,45 @@ public class Car implements Comparable<Car>{
     public boolean isCompleted = false;
 
     /*возвращает улицу, в конце которой стоит в данную секунду. если находится в середине, возвращает нулл*/
-    public Street isAtTheEndOfStreet(int currentSecond)
-    {
+    public Street isAtTheEndOfStreet(int currentSecond) {
         int leftSeconds = currentSecond;
-        for (int i = 0; i < streets.size() && leftSeconds>0; i++) {
+        for (int i = 0; i < streets.size() && leftSeconds > 0; i++) {
             Street street = streets.get(i);
-            leftSeconds = leftSeconds-street.length;
-            if(currentSecond-street.streetlight.greenLight==0)
-            {
+            leftSeconds = leftSeconds - street.length;
+            if (currentSecond - intersectionsTimeCrossing.get(street.endIntersection) == 0) {
                 return street;
             }
         }
-       return null;
+        return null;
     }
 
-    public void doCalculationsWhenPassingIntersection()
-    {
+    public void doCalculationsWhenPassingIntersection(int intersection, int secondsPassing) {
+        intersectionsTimeCrossing.put(intersection, secondsPassing);
+        if (isBeforeLastIntersection(intersection)) {
+            isCompleted = true;
+        }
+    }
 
+    public boolean isBeforeLastIntersection(int intersection)
+    {
+        return false;
     }
 
     @Override
     public int compareTo(Car o) {
         return Integer.compare(priority, o.priority);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return Objects.equals(streets, car.streets);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(streets);
     }
 }
