@@ -40,12 +40,17 @@ public class Main {
                     .map(Integer::valueOf)
                     .collect(Collectors.toList());
             List<Street> streets = new ArrayList<>();
+            List<Intersection> intersections = new ArrayList<>();
             for (int i=0; i < firstLine.get(2); i++)
             {
                 ArrayList<String> values = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
-                streets.add(new Street(
-                        new Intersection(Integer.parseInt(values.get(0)), 0),
-                        new Intersection(Integer.parseInt(values.get(1)), 0),
+                if (!intersections.stream()
+                        .map(intersection -> intersection.id)
+                        .collect(Collectors.toList()).contains(Integer.parseInt(values.get(0))))
+                {
+                    intersections.add(new Intersection(Integer.parseInt(values.get(0)), 0));
+                }
+                streets.add(new Street(Integer.parseInt(values.get(0)), Integer.parseInt(values.get(1)),
                         values.get(2),
                         Integer.parseInt(values.get(3))));
             }
@@ -53,15 +58,11 @@ public class Main {
             for (int i=0; i < firstLine.get(3); i++)
             {
                 ArrayList<String> values = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
-                cars.add(new Car(streets.stream().filter(street -> values.contains(street.get)).collect(Collectors.toList())));
+                cars.add(new Car(streets.stream()
+                        .filter(street -> values.contains(street.name))
+                        .collect(Collectors.toList())));
             }
-            List<List<String>> otherLines = new ArrayList<>();
-            for (int i = 0; i < firstLine.get(0); i++) {
-                ArrayList<String> values = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
-                values.remove(0);
-                otherLines.add(values);
-            }
-            //input = new Input();
+            input = new Input(firstLine.get(0), cars, intersections);
         } catch (IOException e) {
             e.printStackTrace();
         }
