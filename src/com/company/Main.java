@@ -10,11 +10,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -57,6 +53,42 @@ public class Main {
         List<Car> cars;
         List<Intersection> intersections;
         List<Street> streets;
+    }
+    public void algorithm(Input input)
+    {
+        /*на каждую секунду узнаем, стоит ли машина в конце улицы, выбираем приоритетные и пропускаем их*/
+        for (int i = 0; i < input.simLasts; i++) {
+            List<Map.Entry<Car, Street>> waitingCarsAtTheEndOfStreets = new ArrayList<>();
+            for (Car car : input.cars) {
+                if (car.isCompleted) {
+                    continue;
+                }
+                Street endStreet = car.isAtTheEndOfStreet(i);
+                if (endStreet != null) {
+                    waitingCarsAtTheEndOfStreets.add(new AbstractMap.SimpleEntry<>(car, endStreet));
+                }
+            }
+            waitingCarsAtTheEndOfStreets = sortCarsByPriority(waitingCarsAtTheEndOfStreets);
+            List<Street> streets = waitingCarsAtTheEndOfStreets.stream().map(Map.Entry::getValue).collect(Collectors.toList());
+            List<Integer> availableIntersections = getDifferentIntersections(streets);
+            while(availableIntersections.size()>0 && waitingCarsAtTheEndOfStreets.size()>0)
+            {
+                Map.Entry<Car, Street> carStreet = waitingCarsAtTheEndOfStreets.get(0);
+                waitingCarsAtTheEndOfStreets.remove(0);
+                int currentIntersection = carStreet.getValue().endIntersection;
+                availableIntersections.remove(currentIntersection);
+                carStreet.getKey().doCalculationsWhenPassingIntersection();
+            }
+        }
+    }
+
+    public List<Map.Entry<Car, Street>> sortCarsByPriority(List<Map.Entry<Car, Street>> waitingCarsAtTheEndOfStreets) {
+        return waitingCarsAtTheEndOfStreets.stream().sorted(Comparator.comparing(Map.Entry::getKey)).collect(Collectors.toList());
+    }
+
+    public List<Integer> getDifferentIntersections(List<Street> streets)
+    {
+        return new ArrayList<>();
     }
 
     public static Input getData(String fileName) {

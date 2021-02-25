@@ -3,32 +3,17 @@ package com.company.model;
 import java.util.List;
 import java.util.Map;
 
-public class Car {
-    public List<Street> getStreets() {
-        return streets;
-    }
-
-    public void setStreets(List<Street> streets) {
-        this.streets = streets;
-    }
-
+public class Car implements Comparable<Car>{
     public Car(List<Street> streets) {
         this.streets = streets;
     }
 
     public List<Street> streets;
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
+    public Map<Integer, Integer> intersectionsTimeCrossing;
     public int priority;
     public int amountOfIntersections= streets.size()-1;
     public int totalAmountOFStreets= streets.size();
+    public boolean isCompleted = false;
 
     /*возвращает улицу, в конце которой стоит в данную секунду. если находится в середине, возвращает нулл*/
     public Street isAtTheEndOfStreet(int currentSecond)
@@ -45,4 +30,13 @@ public class Car {
        return null;
     }
 
+    public void doCalculationsWhenPassingIntersection()
+    {
+
+    }
+
+    @Override
+    public int compareTo(Car o) {
+        return Integer.compare(priority, o.priority);
+    }
 }
