@@ -26,11 +26,11 @@ public class Main {
             List<Integer> firstLine = Stream.of(br.readLine().split(" "))
                     .map(Integer::valueOf)
                     .collect(Collectors.toList());
-            List<List<String>> pizzas = new ArrayList<>();
+            List<List<String>> otherLines = new ArrayList<>();
             for (int i = 0; i < firstLine.get(0); i++) {
-                ArrayList<String> ingredients = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
-                ingredients.remove(0);
-                pizzas.add(ingredients);
+                ArrayList<String> values = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
+                values.remove(0);
+                otherLines.add(values);
             }
             input = new Input();
         } catch (IOException e) {
