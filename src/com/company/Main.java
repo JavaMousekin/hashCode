@@ -1,5 +1,10 @@
 package com.company;
 
+
+import com.company.model.Car;
+import com.company.model.Intersection;
+import com.company.model.Street;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -17,7 +22,15 @@ import java.util.stream.Stream;
 public class Main {
 
     private static class Input {
+        public Input(int simLasts, List<Car> cars, List<Intersection> intersections) {
+            this.simLasts = simLasts;
+            this.cars = cars;
+            this.intersections = intersections;
+        }
 
+        int simLasts;
+        List<Car> cars;
+        List<Intersection> intersections;
     }
 
     public static Input getData(String fileName) {
@@ -26,13 +39,29 @@ public class Main {
             List<Integer> firstLine = Stream.of(br.readLine().split(" "))
                     .map(Integer::valueOf)
                     .collect(Collectors.toList());
+            List<Street> streets = new ArrayList<>();
+            for (int i=0; i < firstLine.get(2); i++)
+            {
+                ArrayList<String> values = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
+                streets.add(new Street(
+                        new Intersection(Integer.parseInt(values.get(0)), 0),
+                        new Intersection(Integer.parseInt(values.get(1)), 0),
+                        values.get(2),
+                        Integer.parseInt(values.get(3))));
+            }
+            List<Car> cars = new ArrayList<>();
+            for (int i=0; i < firstLine.get(3); i++)
+            {
+                ArrayList<String> values = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
+                cars.add(new Car())
+            }
             List<List<String>> otherLines = new ArrayList<>();
             for (int i = 0; i < firstLine.get(0); i++) {
                 ArrayList<String> values = new ArrayList<>(Arrays.asList(br.readLine().split(" ")));
                 values.remove(0);
                 otherLines.add(values);
             }
-            input = new Input();
+            //input = new Input();
         } catch (IOException e) {
             e.printStackTrace();
         }
