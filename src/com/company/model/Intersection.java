@@ -18,13 +18,6 @@ public class Intersection {
         this.id = id;
     }
 
-    public int getGreenLight() {
-        return greenLight;
-    }
-
-    public void setGreenLight(int greenLight) {
-        this.greenLight = greenLight;
-    }
 
     public int id;
 

@@ -141,7 +141,7 @@ public class Main {
         return builder.toString();
     }
 
-    public String getShortestCarWays(Input input) {
+    public static String getShortestCarWays(Input input) {
         Map<Car, Integer> path = new HashMap<>();
         input.getCars().forEach(car -> path.put(car, car.getStreets().size() - 1 + car.getStreets().stream()
                                          .map(Street::getLength)
@@ -154,19 +154,21 @@ public class Main {
                     carIntegerEntry.getKey().getStreets().forEach(street -> intersections.add(street.endIntersection));
                 });
         StringBuilder builder = new StringBuilder();
-        builder.append(intersections.size());
+        builder.append(intersections.size()).append("\n");
         intersections.forEach(intersection ->
-                builder.append(intersection)
-                        .append(incomingStreets(intersection, input).size())
+                builder.append(intersection).append("\n")
+                        .append(input.getStreets().stream()
+                                .filter(street -> street.getEndIntersection() == intersection)
+                                .count()).append("\n")
                         .append(input.getStreets().stream()
                                 .filter(street -> street.getEndIntersection() == intersection)
                                 .map(street -> street.getName() + " 1")
-                                .collect(Collectors.joining("\n")))
+                                .collect(Collectors.joining("\n"))).append("\n")
         );
         return builder.toString();
     }
 
-    public List<Street> incomingStreets(int intersection, Input input) {
+    public static List<Street> incomingStreets(int intersection, Input input) {
         List<Street> incomingStreets = new ArrayList<>();
         input.getStreets().forEach(street -> {
                     if (street.startIntersection == intersection) {
@@ -208,9 +210,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String path = "\\";
-        List<String> files = Arrays.asList("");
-        files.forEach(file -> postData(process(getData(path + file + ".in")), path + file + ".out"));
-        postData(process(getData(path + "a_example")), path + "a_example" + ".out");
+        String path = "C:\\Users\\Kostik\\IdeaProjects\\hashCode\\src\\com\\company\\";
+        List<String> files = Arrays.asList("b", "c", "d", "e", "f");
+        files.forEach(file -> postData(getShortestCarWays(getData(path + file + ".txt")), path + file + ".out"));
+        //postData(getShortestCarWays(getData(path + "a_example");), path + "a_example" + ".out");
     }
 }
