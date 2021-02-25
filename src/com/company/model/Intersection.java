@@ -1,10 +1,13 @@
 package com.company.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Intersection {
 
-    public Intersection(int id, int greenLight) {
+    public Intersection(int id) {
         this.id = id;
-        this.greenLight = greenLight;
+
     }
 
     public int getId() {
@@ -24,5 +27,15 @@ public class Intersection {
     }
 
     public int id;
-    public int greenLight;
+
+
+    public List<Street> getInStreets()
+    {
+        return new ArrayList<>();
+    }
+
+    public List<Street> getOutStreets()
+    {
+        return new ArrayList<>();
+    }
 }

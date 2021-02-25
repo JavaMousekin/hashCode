@@ -56,4 +56,5 @@ public class Street {
     }
 
     public StreetEndIntersection streetEndIntersection;
+    public Streetlight streetlight;
 }
