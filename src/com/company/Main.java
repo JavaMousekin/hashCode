@@ -22,15 +22,17 @@ import java.util.stream.Stream;
 public class Main {
 
     private static class Input {
-        public Input(int simLasts, List<Car> cars, List<Intersection> intersections) {
+        public Input(int simLasts, List<Car> cars, List<Intersection> intersections, List<Street> streets) {
             this.simLasts = simLasts;
             this.cars = cars;
             this.intersections = intersections;
+            this.streets = streets;
         }
 
         int simLasts;
         List<Car> cars;
         List<Intersection> intersections;
+        List<Street> streets;
     }
 
     public static Input getData(String fileName) {
@@ -82,6 +84,27 @@ public class Main {
         return builder.toString();
     }
 
+    public List<Street> incomingStreets(int intersection, Input input) {
+        List<Street> incomingStreets = new ArrayList<>();
+        input.streets.stream().forEach(street -> {
+                    if (street.startIntersection == intersection) {
+                        incomingStreets.add(street);
+                    }
+                }
+        );
+        return incomingStreets;
+    }
+    public List<Street> outcomingStreets(int intersection, Input input) {
+        List<Street> outcomingStreets = new ArrayList<>();
+        input.streets.stream().forEach(street -> {
+                    if (street.endIntersection == intersection) {
+                        outcomingStreets.add(street);
+                    }
+                }
+        );
+        return outcomingStreets;
+    }
+    
     public static void main(String[] args) {
         String path = "\\";
         List<String> files = Arrays.asList("");
