@@ -183,7 +183,7 @@ public class Main {
         Map<Car, Integer> path = getPath(input);
         List<Map.Entry<Car, Integer>> sorted= new ArrayList<> (path.entrySet());
         sorted.sort((Comparator<? super Map.Entry<Car, Integer>>) Map.Entry.comparingByValue().reversed());
-        return path;
+       return (Map<Car, Integer>) sorted.get(0);
     }
 
     public static String getShortestCarWays(Input input) {
