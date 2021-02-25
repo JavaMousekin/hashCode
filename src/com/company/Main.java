@@ -171,11 +171,23 @@ public class Main {
         return builder.toString();
     }
 
-    public static String getShortestCarWays(Input input) {
+    public static Map<Car, Integer> getPath(Input input) {
         Map<Car, Integer> path = new HashMap<>();
         input.getCars().forEach(car -> path.put(car, car.getStreets().size() - 1 + car.getStreets().stream()
-                                         .map(Street::getLength)
-                                         .reduce(0, Integer::sum)));
+                .map(Street::getLength)
+                .reduce(0, Integer::sum)));
+        return path;
+    }
+    //чем меньше интеджер тем выше приоритет
+    public static Map<Car, Integer> getPriority(Input input) {
+        Map<Car, Integer> path = getPath(input);
+        List<Map.Entry<Car, Integer>> sorted= new ArrayList<> (path.entrySet());
+        sorted.sort((Comparator<? super Map.Entry<Car, Integer>>) Map.Entry.comparingByValue().reversed());
+        return path;
+    }
+
+    public static String getShortestCarWays(Input input) {
+        Map<Car, Integer> path = getPath(input);
         Set<Integer> intersections = new HashSet<>();
 
         path.entrySet().stream()
